@@ -1,0 +1,21 @@
+{% extends "admin/core/base.html" %}
+
+{% block title %}Portico{% endblock %}
+{% block title-section %}Portico{% endblock %}
+
+{% block body %}
+    <form method="POST">
+    {% csrf_token %}
+
+    <div class="large-12 columns">
+        <div class="box">
+            <div class="title-area">
+                <h2>Settings</h2>
+            </div>
+            <div class="content">
+            </div>
+            <button type="submit" class="success button">Update Settings</button>
+        </div>
+    </div>
+    </form>
+{% endblock %}
