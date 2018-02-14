@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD Journal Publishing DTD v2.3 20070202//EN"
+"http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article
+  dtd-version="3.0" xml:lang="en"
+  xmlns:mml="http://www.w3.org/1998/Math/MathML"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- SYSTEM:  Archiving and Interchange DTD Suite    -->
+  <!-- Updated July 2007 An archival journal article with minimal
+    Front Matter, a Table, and Citations for testing         -->
+  <!-- =============== Front Matter (Metadata) =========== -->
+  <front>
+    <journal-meta>
+      <journal-id>{{ journal.name }}</journal-id>
+      <issn>{{ journal.issn }}</issn>
+      <publisher><publisher-name></publisher-name></publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="doi">{{ article.doi }}</article-id>
+      <title-group>
+        <article-title>{{ article.title|safe }}</article-title>
+      </title-group>
+
+
+      <contrib-group>
+
+        <contrib contrib-type="author">
+          <name><surname>Rolls</surname>
+            <given-names>Albert</given-names>
+          </name>
+          <xref ref-type="aff">
+          </xref>
+        </contrib>
+      </contrib-group>
+
+      <aff>
+        Independent Scholar
+      </aff>
+
+
+      <pub-date pub-type="pub">
+        <year>2012</year>
+      </pub-date>
+      <volume>1</volume>
+      <issue>1</issue>
+      <permissions>
+        <copyright-statement>Copyright &#x00A9; 2012, Albert Rolls</copyright-statement>
+        <license license-type="open-access" xlink:href="http://creativecommons.org/licenses/by/2.0/">
+          <license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.</license-p>
+        </license>
+      </permissions>
+
+      <self-uri>https://www.pynchon.net/owap/article/view/27</self-uri>
+      <abstract><p>In a footnote to "Fast Learner: The Typescript of Pynchon's <italic>V.</italic> at the Harry Ransom Center in Austin," Luc Herman and John Krafft note that the letters Corlies (Cork) Smith graciously provided them for their study of the transformation of the typescript of <italic>V.</italic> (1963) into the published novel "may be identical to those published in an unauthorized limited edition under the title <italic>Of a Fond Ghoul</italic> in 1990." Sounding more confident in "From the Ground Up: The Evolution of the South-West Africa Chapter in Pynchon's <italic>V.</italic>," they write, "Originals of the Smith-Pynchon letters were apparently stolen from the offices of Harper &amp; Row, and an unauthorized facsimile edition was published in 1990 under the title <italic>Of a Fond Ghoul</italic> (a phrase Pynchon proposes in the correspondence as one possible title for his novel). Smith later received photocopies of the letters in the mail." Herman and Krafft were essentially correct in their assumption about the letters they have. Smith received a copy of the extant correspondence between him and Pynchon as it appears in <italic>Of a Fond Ghoul</italic>, but he did not get the book's entire contents. This piece provides archival information on the documents contained in <italic>Of a Fond Ghoul</italic>.</p></abstract>
+    </article-meta>
+  </front>
+</article>

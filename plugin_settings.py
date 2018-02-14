@@ -1,6 +1,6 @@
 from utils import models, setting_handler
 
-PLUGIN_NAME = 'Portico'
+PLUGIN_NAME = 'portico'
 DESCRIPTION = 'This is a plugin to exporting Portico zip files.'
 AUTHOR = 'Andy Byers'
 VERSION = '1.0'
