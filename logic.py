@@ -89,10 +89,11 @@ def prepare_article(request, article, temp_folder, article_only=False):
         generate_jats_metadata(request, article, article_folder)
 
 
-def prepare_export_for_issue(request):
+def prepare_export_for_issue(request, file=False):
     """
     Prepares an export for an issue
     :param request: HttpRequest object
+    :param file: Boolean, returns a file path rather than a HttpRequest
     :return: Streaming zip file
     """
     issue_id = request.POST.get('export-issue', None)
@@ -107,6 +108,12 @@ def prepare_export_for_issue(request):
         prepare_article(request, article, temp_folder)
 
     zip_portico_folder(temp_folder)
+
+    if file:
+        return [
+            '{folder}.zip'.format(folder=temp_folder),
+            '{filename}.zip'.format(filename=folder_string)
+        ]
 
     return files.serve_temp_file('{folder}.zip'.format(folder=temp_folder),
                                  '{filename}.zip'.format(filename=folder_string))

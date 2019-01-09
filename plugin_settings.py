@@ -8,6 +8,10 @@ SHORT_NAME = 'portico'
 DISPLAY_NAME = 'Portico'
 MANAGER_URL = 'portico_index'
 
+PORTICO_FTP_SERVER = 'kraftwerk.reclaimhosting.com'
+PORTICO_FTP_USERNAME = 'portico_test@martineve.reclaim.hosting'
+PORTICO_FTP_PASSWORD = 'D6-_cEGx]a}}'
+
 
 def get_self():
     new_plugin, created = models.Plugin.objects.get_or_create(name=SHORT_NAME,
