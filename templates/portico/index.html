@@ -23,6 +23,7 @@
                             <th>No. Articles</th>
                             <th></th>
                             <th></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody {% if not issue %}class="sortable"{% endif %}>
@@ -40,6 +41,11 @@
                                 <td>
                                     <button name="export-issue" value="{{ i.pk }}" class="small success button"><i
                                             class="fa fa-download" aria-hidden="true">&nbsp;</i>Export
+                                    </button>
+                                </td>
+                                <td>
+                                    <button name="send-to-portico" value="{{ i.pk }}" class="small success button"><i
+                                            class="fa fa-upload" aria-hidden="true">&nbsp;</i>Send to Portico
                                     </button>
                                 </td>
                             </tr>
