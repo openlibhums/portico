@@ -1,4 +1,4 @@
-from ftplib import FTP
+from ftplib import FTP, error_perm
 import logging
 from mock import Mock
 import os
@@ -47,7 +47,10 @@ class Command(BaseCommand):
         )
 
         request = create_fake_request(issue)
-        zip_file, file_name = logic.prepare_export_for_issue(request, file=True)
+        zip_file, file_name = logic.prepare_export_for_issue(
+            request,
+            file=True
+        )
 
         logging.info(
             'Zip file to send {file}'.format(
@@ -62,6 +65,13 @@ class Command(BaseCommand):
             user=plugin_settings.PORTICO_FTP_USERNAME,
             passwd=plugin_settings.PORTICO_FTP_PASSWORD
         )
+        try:
+            ftp.mkd('janeway')
+        except error_perm:
+            # janeway dir exists, skip
+            pass
+
+        ftp.cwd('janeway')
 
         ftp.storbinary(
             'STOR {file_name}'.format(file_name=file_name),

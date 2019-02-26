@@ -8,24 +8,28 @@ SHORT_NAME = 'portico'
 DISPLAY_NAME = 'Portico'
 MANAGER_URL = 'portico_index'
 
-PORTICO_FTP_SERVER = 'kraftwerk.reclaimhosting.com'
-PORTICO_FTP_USERNAME = 'portico_test@martineve.reclaim.hosting'
-PORTICO_FTP_PASSWORD = 'D6-_cEGx]a}}'
+PORTICO_FTP_SERVER = ''
+PORTICO_FTP_USERNAME = ''
+PORTICO_FTP_PASSWORD = ''
 
 
 def get_self():
-    new_plugin, created = models.Plugin.objects.get_or_create(name=SHORT_NAME,
-                                                              display_name=DISPLAY_NAME,
-                                                              version=VERSION,
-                                                              enabled=True)
+    new_plugin, created = models.Plugin.objects.get_or_create(
+        name=SHORT_NAME,
+        display_name=DISPLAY_NAME,
+        version=VERSION,
+        enabled=True
+    )
     return new_plugin
 
 
 def install():
-    new_plugin, created = models.Plugin.objects.get_or_create(name=SHORT_NAME,
-                                                              display_name=DISPLAY_NAME,
-                                                              version=VERSION,
-                                                              enabled=True)
+    new_plugin, created = models.Plugin.objects.get_or_create(
+        name=SHORT_NAME,
+        display_name=DISPLAY_NAME,
+        version=VERSION,
+        enabled=True
+    )
 
     if created:
         print('Plugin {0} installed.'.format(PLUGIN_NAME))
@@ -34,6 +38,6 @@ def install():
 
 
 def hook_registry():
-    # On site load, the load function is run for each installed plugin to generate
-    # a list of hooks.
+    # On site load, the load function is run for each installed plugin to
+    # generate a list of hooks.
     return {}

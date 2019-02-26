@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.core.management import call_command
+from django.contrib import messages
 
 from plugins.portico import plugin_settings, logic
 from journal import models
@@ -21,6 +22,12 @@ def index(request):
         if 'send-to-portico' in request.POST:
             export_id = request.POST.get('send-to-portico')
             call_command('send_to_portico', export_id)
+
+        messages.add_message(
+            request,
+            messages.INFO,
+            'Command complete.'
+        )
 
         return redirect(reverse('portico_index'))
 

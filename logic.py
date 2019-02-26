@@ -38,15 +38,17 @@ def prepare_temp_folder(request, issue=None, article=None):
     folder_string = str(uuid.uuid4())
 
     if article and issue:
-        folder_string = '{journal_code}_{vol}_{issue}_{pk}'.format(journal_code=request.journal.code,
-                                                                   vol=issue.volume,
-                                                                   issue=issue.issue,
-                                                                   pk=article.pk)
+        folder_string = '{journal_code}_{vol}_{issue}_{pk}'.format(
+            journal_code=request.journal.code,
+            vol=issue.volume,
+            issue=issue.issue,
+            pk=article.pk)
     elif issue:
-        folder_string = '{journal_code}_{vol}_{issue}_{year}'.format(journal_code=request.journal.code,
-                                                                     vol=issue.volume,
-                                                                     issue=issue.issue,
-                                                                     year=issue.date.year)
+        folder_string = '{journal_code}_{vol}_{issue}_{year}'.format(
+            journal_code=request.journal.code,
+            vol=issue.volume,
+            issue=issue.issue,
+            year=issue.date.year)
 
     folder = os.path.join(settings.BASE_DIR, 'files', 'temp', 'portico', folder_string)
     files.mkdirs(folder)
