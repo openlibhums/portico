@@ -83,12 +83,16 @@ def prepare_article(request, article, temp_folder, article_only=False):
         files.copy_file_to_folder(xml_galley.file.self_article_path(), xml_galley.file.uuid_filename, article_folder)
         for image in xml_galley.images.all():
             files.copy_file_to_folder(image.self_article_path(), image.original_filename, article_folder)
-
-        pdfs = article.pdfs
-        for pdf in pdfs:
-            files.copy_file_to_folder(pdf.file.self_article_path(), pdf.file.uuid_filename, article_folder)
     except core_models.Galley.DoesNotExist:
         generate_jats_metadata(request, article, article_folder)
+
+    pdfs = core_models.Galley.objects.filter(
+        article=article,
+        file__mime_type='application/pdf',
+    )
+    for pdf in pdfs:
+        files.copy_file_to_folder(pdf.file.self_article_path(),
+                                  pdf.file.uuid_filename, article_folder)
 
 
 def prepare_export_for_issue(request, file=False):
