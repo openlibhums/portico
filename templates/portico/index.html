@@ -30,7 +30,7 @@
                         {% for i in issues %}
                             <tr {% if not issue %}id="issues-{{ i.pk }}"{% endif %}>
                                 <td>{{ i.issue_title }}</td>
-                                <td>{{ i.issue_type }}</td>
+                                <td>{{ i.issue_type.pretty_name }}</td>
                                 <td>{{ i.volume }}</td>
                                 <td>{{ i.issue }}</td>
                                 <td>{{ i.date|date:"Y-m-d" }}</td>
