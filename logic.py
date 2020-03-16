@@ -12,6 +12,15 @@ from journal import models
 from submission import models as submission_models
 
 
+def file_path(article_id, uuid_filename):
+    return os.path.join(
+        settings.BASE_DIR,
+        'files',
+        'articles',
+        str(article_id),
+        str(uuid_filename),
+    )
+
 def generate_jats_metadata(request, article, article_folder):
     print('Generating JATS file...')
     template = 'portico/jats.xml'
@@ -92,7 +101,7 @@ def prepare_article(request, article, temp_folder, article_only=False):
         file__mime_type='application/pdf',
     )
     for pdf in pdfs:
-        files.copy_file_to_folder(pdf.file.self_article_path(),
+        files.copy_file_to_folder(file_path(article.pk, pdf.file.uuid_filename),
                                   pdf.file.uuid_filename, article_folder)
 
 

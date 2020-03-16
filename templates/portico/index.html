@@ -17,7 +17,6 @@
                         <tr>
                             <th>Title</th>
                             <th>Type</th>
-                            {% if not request.journal %}<td>Journal</td>{% endif %}
                             <th>Volume</th>
                             <th>Number</th>
                             <th>Date</th>
@@ -32,7 +31,6 @@
                             <tr {% if not issue %}id="issues-{{ i.pk }}"{% endif %}>
                                 <td>{{ i.issue_title }}</td>
                                 <td>{{ i.issue_type.pretty_name }}</td>
-                                {% if not request.journal %}<td>{{ i.journal.name }}</td>{% endif %}
                                 <td>{{ i.volume }}</td>
                                 <td>{{ i.issue }}</td>
                                 <td>{{ i.date|date:"Y-m-d" }}</td>
@@ -57,7 +55,6 @@
                 </form>
             </div>
         </div>
-        {% if request.journal %}
         <div class="box">
             <div class="title-area">
                 <h2>Articles</h2>
@@ -95,7 +92,6 @@
                 </form>
             </div>
         </div>
-        {% endif %}
     </div>
 {% endblock %}
 
