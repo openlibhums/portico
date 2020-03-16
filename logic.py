@@ -1,6 +1,7 @@
 import os
 import uuid
 import shutil
+import codecs
 
 from django.shortcuts import get_object_or_404
 from django.conf import settings
@@ -23,7 +24,7 @@ def generate_jats_metadata(request, article, article_folder):
     file_name = '{id}.xml'.format(id=article.pk)
     full_path = os.path.join(article_folder, file_name)
 
-    with open(full_path, 'w') as file:
+    with codecs.open(full_path, 'w', "utf-8") as file:
         file.write(rendered_jats)
         file.close()
 
@@ -110,7 +111,6 @@ def prepare_export_for_issue(request, file=False):
     print('Processing {issue}'.format(issue=issue))
 
     for article in issue.articles.all():
-        print('({pk})Adding article: {title}'.format(pk=article.pk, title=article.title))
         prepare_article(request, article, temp_folder)
 
     zip_portico_folder(temp_folder)
