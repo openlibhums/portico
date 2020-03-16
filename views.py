@@ -5,11 +5,17 @@ from django.contrib import messages
 
 from plugins.portico import plugin_settings, logic
 from journal import models
+from security import decorators
 
 
+@decorators.editor_user_required
 def index(request):
     plugin = plugin_settings.get_self()
-    issues = models.Issue.objects.filter(journal=request.journal)
+
+    if request.journal:
+        issues = models.Issue.objects.filter(journal=request.journal)
+    else:
+        issues = models.Issue.objects.all().order_by('journal__code')
 
     if request.POST:
 
@@ -40,6 +46,7 @@ def index(request):
     return render(request, template, context)
 
 
+@decorators.editor_user_required
 def settings(request):
     plugin = plugin_settings.get_self()
 
