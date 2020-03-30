@@ -10,7 +10,7 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('journal', '0037_auto_20200330_1335'),
+        ('journal', '0036_set_default_xslt'),
         ('portico', '0001_initial'),
     ]
 
