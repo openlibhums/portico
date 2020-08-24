@@ -105,12 +105,15 @@ def prepare_article(request, article, temp_folder, article_only=False):
                                   pdf.file.uuid_filename, article_folder)
 
     if not pdfs.exists():
-        html_galley = galleys.get(file__mime_type__contains='/html')
-        files.copy_file_to_folder(
-            file_path(article.pk, html_galley.file.uuid_filename),
-            html_galley.file.uuid_filename,
-            article_folder,
-        )
+        try:
+            html_galley = galleys.get(file__mime_type__contains='/html')
+            files.copy_file_to_folder(
+                file_path(article.pk, html_galley.file.uuid_filename),
+                html_galley.file.uuid_filename,
+                article_folder,
+            )
+        except core_models.Galley.DoesNotExist:
+            pass
 
 
 def prepare_export_for_issue(request, file=False):
