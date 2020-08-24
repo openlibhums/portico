@@ -104,6 +104,14 @@ def prepare_article(request, article, temp_folder, article_only=False):
         files.copy_file_to_folder(file_path(article.pk, pdf.file.uuid_filename),
                                   pdf.file.uuid_filename, article_folder)
 
+    if not pdfs.exists():
+        html_galley = galleys.get(file__mime_type__contains='/html')
+        files.copy_file_to_folder(
+            file_path(article.pk, html_galley.file.uuid_filename),
+            html_galley.file.uuid_filename,
+            article_folder,
+        )
+
 
 def prepare_export_for_issue(request, file=False):
     """
