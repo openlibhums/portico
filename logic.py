@@ -88,12 +88,20 @@ def prepare_article(request, article, temp_folder, article_only=False):
     files.mkdirs(article_folder)
     galleys = article.galley_set.all()
 
-    try:
-        xml_galley = galleys.get(file__mime_type__contains='/xml')
-        files.copy_file_to_folder(xml_galley.file.self_article_path(), xml_galley.file.uuid_filename, article_folder)
+    xml_galleys = galleys.filter(type='xml')
+    for xml_galley in xml_galleys:
+        files.copy_file_to_folder(
+            xml_galley.file.self_article_path(),
+            xml_galley.file.uuid_filename,
+            article_folder,
+        )
         for image in xml_galley.images.all():
-            files.copy_file_to_folder(image.self_article_path(), image.original_filename, article_folder)
-    except core_models.Galley.DoesNotExist:
+            files.copy_file_to_folder(
+                image.self_article_path(),
+                image.original_filename,
+                article_folder,
+            )
+    if not xml_galleys.exists():
         generate_jats_metadata(request, article, article_folder)
 
     pdfs = core_models.Galley.objects.filter(
@@ -101,19 +109,24 @@ def prepare_article(request, article, temp_folder, article_only=False):
         file__mime_type='application/pdf',
     )
     for pdf in pdfs:
-        files.copy_file_to_folder(file_path(article.pk, pdf.file.uuid_filename),
-                                  pdf.file.uuid_filename, article_folder)
+        files.copy_file_to_folder(
+            file_path(article.pk, pdf.file.uuid_filename),
+            pdf.file.uuid_filename, article_folder,
+        )
 
-    if not pdfs.exists():
-        try:
-            html_galley = galleys.get(file__mime_type__contains='/html')
+    html_galleys = galleys.filter(type='html')
+    for html_galley in html_galleys:
+        files.copy_file_to_folder(
+            file_path(article.pk, html_galley.file.uuid_filename),
+            html_galley.file.uuid_filename,
+            article_folder,
+        )
+        for image in html_galley.images.all():
             files.copy_file_to_folder(
-                file_path(article.pk, html_galley.file.uuid_filename),
-                html_galley.file.uuid_filename,
+                image.self_article_path(),
+                image.original_filename,
                 article_folder,
             )
-        except core_models.Galley.DoesNotExist:
-            pass
 
 
 def prepare_export_for_issue(request, file=False):
