@@ -21,6 +21,7 @@ def file_path(article_id, uuid_filename):
         str(uuid_filename),
     )
 
+
 def generate_jats_metadata(request, article, article_folder):
     print('Generating JATS file...')
     template = 'portico/jats.xml'
@@ -71,6 +72,42 @@ def zip_portico_folder(temp_folder):
     shutil.rmtree(temp_folder)
 
 
+def get_best_portico_xml_galley(article, galleys):
+    xml_galleys = galleys.filter(
+        file__mime_type__in=files.XML_MIMETYPES,
+        public=True,
+    ).order_by('-file__date_uploaded')
+
+    if article.render_galley:
+        return article.render_galley
+
+    if xml_galleys:
+        try:
+            return xml_galleys.get(public=True)
+        except core_models.Galley.DoesNotExist:
+            pass
+        return xml_galleys.first()
+    return None
+
+
+def get_best_portico_pdf_galley(galleys):
+    pdf_galley = galleys.filter(
+        file__mime_type__in=files.PDF_MIMETYPES,
+        public=True,
+    ).order_by('-file__date_uploaded').first()
+
+    return pdf_galley
+
+
+def get_best_portico_html_galley(galleys):
+    html_galley = galleys.filter(
+        file__mime_type__in=files.HTML_MIMETYPES,
+        public=True,
+    ).order_by('-file__date_uploaded').first()
+
+    return html_galley
+
+
 def prepare_article(request, article, temp_folder, article_only=False):
     """
     Prepares an article for portico export
@@ -88,8 +125,8 @@ def prepare_article(request, article, temp_folder, article_only=False):
     files.mkdirs(article_folder)
     galleys = article.galley_set.all()
 
-    xml_galleys = galleys.filter(type='xml')
-    for xml_galley in xml_galleys:
+    xml_galley = get_best_portico_xml_galley(article, galleys)
+    if xml_galley:
         files.copy_file_to_folder(
             xml_galley.file.self_article_path(),
             xml_galley.file.uuid_filename,
@@ -101,21 +138,18 @@ def prepare_article(request, article, temp_folder, article_only=False):
                 image.original_filename,
                 article_folder,
             )
-    if not xml_galleys.exists():
+    else:
         generate_jats_metadata(request, article, article_folder)
 
-    pdfs = core_models.Galley.objects.filter(
-        article=article,
-        file__mime_type='application/pdf',
-    )
-    for pdf in pdfs:
+    pdf_galley = get_best_portico_pdf_galley(galleys)
+    if pdf_galley:
         files.copy_file_to_folder(
-            file_path(article.pk, pdf.file.uuid_filename),
-            pdf.file.uuid_filename, article_folder,
+            file_path(article.pk, pdf_galley.file.uuid_filename),
+            pdf_galley.file.uuid_filename, article_folder,
         )
 
-    html_galleys = galleys.filter(type='html')
-    for html_galley in html_galleys:
+    html_galley = get_best_portico_html_galley(galleys)
+    if html_galley:
         files.copy_file_to_folder(
             file_path(article.pk, html_galley.file.uuid_filename),
             html_galley.file.uuid_filename,
@@ -126,6 +160,9 @@ def prepare_article(request, article, temp_folder, article_only=False):
                 image.self_article_path(),
                 image.original_filename,
                 article_folder,
+            )
+            os.rename(
+                im
             )
 
 
