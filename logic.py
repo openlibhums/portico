@@ -161,9 +161,6 @@ def prepare_article(request, article, temp_folder, article_only=False):
                 image.original_filename,
                 article_folder,
             )
-            os.rename(
-                im
-            )
 
 
 def prepare_export_for_issue(request, file=False):
