@@ -62,7 +62,9 @@ class Command(BaseCommand):
         file_to_send = open(zip_file, 'rb')
 
         ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        key = RSAKey(data=decodebytes(plugin_settings.PORTICO_FTP_SERVER_KEY.encode()))
+        client.get_host_keys().add(hostname=plugin_settings.PORTICO_FTP_SERVER, keytype="ecdsa", key=key)
+
         ssh.connect(
             plugin_settings.PORTICO_FTP_SERVER,
             username=plugin_settings.PORTICO_FTP_USERNAME,
