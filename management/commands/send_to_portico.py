@@ -2,6 +2,7 @@ from ftplib import FTP, error_perm
 import logging
 from mock import Mock
 import os
+import paramiko
 
 from django.core.management.base import BaseCommand
 from django.http import HttpRequest
@@ -60,26 +61,21 @@ class Command(BaseCommand):
 
         file_to_send = open(zip_file, 'rb')
 
-        ftp = FTP(plugin_settings.PORTICO_FTP_SERVER)
-        ftp.login(
-            user=plugin_settings.PORTICO_FTP_USERNAME,
-            passwd=plugin_settings.PORTICO_FTP_PASSWORD
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(
+            plugin_settings.PORTICO_FTP_SERVER,
+            username=plugin_settings.PORTICO_FTP_USERNAME,
+            password=plugin_settings.PORTICO_FTP_PASSWORD,
         )
-        try:
-            ftp.mkd('janeway')
-        except error_perm:
-            # janeway dir exists, skip
-            pass
-
-        ftp.cwd('janeway')
-
-        ftp.storbinary(
-            'STOR {file_name}'.format(file_name=file_name),
-            file_to_send
+        sftp = ssh.open_sftp()
+        remote_path = 'janeway/{}'.format(file_name)
+        sftp.put(
+            zip_file, 
+            remote_path,
         )
 
-        # Close file, FTP Session and unlink the zip file
-        file_to_send.close()
-        ftp.quit()
+        # Close SFTP Session and unlink the zip file
+        ssh.close()
         os.unlink(zip_file)
 
