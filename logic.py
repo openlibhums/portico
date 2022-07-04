@@ -83,8 +83,8 @@ def get_best_portico_xml_galley(article, galleys):
 
     if xml_galleys:
         try:
-            return xml_galleys.get(public=True)
-        except core_models.Galley.DoesNotExist:
+            return xml_galleys.filter(public=True)[0]
+        except IndexError:
             pass
         return xml_galleys.first()
     return None
