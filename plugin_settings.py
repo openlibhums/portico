@@ -2,17 +2,12 @@ from utils import models, setting_handler
 
 PLUGIN_NAME = 'portico'
 DESCRIPTION = 'This is a plugin to exporting Portico zip files.'
-AUTHOR = 'Andy Byers'
-VERSION = '1.1'
+AUTHOR = 'Birkbeck Centre for Technology and Publishing'
+VERSION = '1.2'
 SHORT_NAME = 'portico'
 DISPLAY_NAME = 'Portico'
 MANAGER_URL = 'portico_index'
 JANEWAY_VERSION = "1.3.6"
-
-PORTICO_FTP_SERVER = ''
-PORTICO_FTP_SERVER_KEY = ''
-PORTICO_FTP_USERNAME = ''
-PORTICO_FTP_PASSWORD = ''
 
 
 def get_self():
@@ -26,11 +21,13 @@ def get_self():
 
 
 def install():
-    new_plugin, created = models.Plugin.objects.get_or_create(
+    new_plugin, created = models.Plugin.objects.update_or_create(
         name=SHORT_NAME,
-        display_name=DISPLAY_NAME,
-        version=VERSION,
-        enabled=True
+        defaults={
+            "version": VERSION,
+            "enabled": True,
+            "display_name": DISPLAY_NAME,
+        }
     )
 
     if created:
