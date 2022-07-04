@@ -4,10 +4,11 @@ from mock import Mock
 import os
 import paramiko
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.http import HttpRequest
 
-from plugins.portico import plugin_settings, logic
+from plugins.portico import logic
 from journal import models
 
 
@@ -62,13 +63,13 @@ class Command(BaseCommand):
         file_to_send = open(zip_file, 'rb')
 
         ssh = paramiko.SSHClient()
-        key = RSAKey(data=decodebytes(plugin_settings.PORTICO_FTP_SERVER_KEY.encode()))
-        client.get_host_keys().add(hostname=plugin_settings.PORTICO_FTP_SERVER, keytype="ecdsa", key=key)
+        key = RSAKey(data=decodebytes(settings.PORTICO_FTP_SERVER_KEY.encode()))
+        client.get_host_keys().add(hostname=settings.PORTICO_FTP_SERVER, keytype="ecdsa", key=key)
 
         ssh.connect(
-            plugin_settings.PORTICO_FTP_SERVER,
-            username=plugin_settings.PORTICO_FTP_USERNAME,
-            password=plugin_settings.PORTICO_FTP_PASSWORD,
+            settings.PORTICO_FTP_SERVER,
+            username=settings.PORTICO_FTP_USERNAME,
+            password=settings.PORTICO_FTP_PASSWORD,
         )
         sftp = ssh.open_sftp()
         remote_path = 'janeway/{}'.format(file_name)
