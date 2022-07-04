@@ -60,11 +60,20 @@ class Command(BaseCommand):
             )
         )
 
-        file_to_send = open(zip_file, 'rb')
-
         ssh = paramiko.SSHClient()
-        key = RSAKey(data=decodebytes(settings.PORTICO_FTP_SERVER_KEY.encode()))
-        client.get_host_keys().add(hostname=settings.PORTICO_FTP_SERVER, keytype="ecdsa", key=key)
+        ecdsa_key = getattr(settings, 'PORTICO_FTP_SERVER_KEY', '')
+        if ecdsa_key:
+            key = paramiko.ecdsakey.ECDSAKey(
+                data=paramiko.py3compat.decodebytes(ecdsa_key.encode("utf8"))
+            )
+            ssh.get_host_keys().add(
+                hostname=settings.PORTICO_FTP_SERVER,
+                keytype="ecdsa",
+                key=key,
+            )
+        else:
+            logging.warning("No PORTICO_FTP_SERVER_KEY configured")
+            ssh.set_missing_host_key_policy(paramiko.MissingHostKeyPolicy())
 
         ssh.connect(
             settings.PORTICO_FTP_SERVER,
@@ -74,7 +83,7 @@ class Command(BaseCommand):
         sftp = ssh.open_sftp()
         remote_path = 'janeway/{}'.format(file_name)
         sftp.put(
-            zip_file, 
+            zip_file,
             remote_path,
         )
 
