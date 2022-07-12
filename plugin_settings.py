@@ -3,7 +3,7 @@ from utils import models, setting_handler
 PLUGIN_NAME = 'portico'
 DESCRIPTION = 'This is a plugin to exporting Portico zip files.'
 AUTHOR = 'Birkbeck Centre for Technology and Publishing'
-VERSION = '1.2'
+VERSION = '1.3'
 SHORT_NAME = 'portico'
 DISPLAY_NAME = 'Portico'
 MANAGER_URL = 'portico_index'
