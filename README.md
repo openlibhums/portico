@@ -7,7 +7,7 @@ a set of SSH credentials.
 ## Installation
 
 * Copy the plugin under the plugins directory in your Janeway installation `/path/to/janeway/src/plugins/`
-* Install this plugin's requirements with `pip install -r src/plugns/portico`
+* Install this plugin's requirements with `pip install -r src/plugins/portico`
 * Run Janeway's plugin install command: `python src/manage.py install_plugins`
 * Run migrations: `python src/manage.py migrate portico`
 * Configre the following settings under your Janeway project `settings.py` module:
