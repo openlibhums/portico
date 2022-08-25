@@ -1,24 +1,13 @@
-from ftplib import FTP, error_perm
 import logging
-from mock import Mock
 import os
-import paramiko
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from django.http import HttpRequest
+from janeway_ftp import sftp
 
 from plugins.portico import logic
+from utils.deposit import helpers as deposit_helpers
 from journal import models
-
-
-def create_fake_request(issue):
-    request = Mock(HttpRequest)
-    request.GET = Mock()
-    request.journal = issue.journal
-    request.POST = {'export-issue': issue.pk}
-
-    return request
 
 
 class Command(BaseCommand):
@@ -48,7 +37,7 @@ class Command(BaseCommand):
             )
         )
 
-        request = create_fake_request(issue)
+        request = deposit_helpers.create_fake_request(issue)
         zip_file, file_name = logic.prepare_export_for_issue(
             request,
             file=True
@@ -60,34 +49,14 @@ class Command(BaseCommand):
             )
         )
 
-        ssh = paramiko.SSHClient()
-        ecdsa_key = getattr(settings, 'PORTICO_FTP_SERVER_KEY', '')
-        if ecdsa_key:
-            key = paramiko.ecdsakey.ECDSAKey(
-                data=paramiko.py3compat.decodebytes(ecdsa_key.encode("utf8"))
-            )
-            ssh.get_host_keys().add(
-                hostname=settings.PORTICO_FTP_SERVER,
-                keytype="ecdsa",
-                key=key,
-            )
-        else:
-            logging.warning("No PORTICO_FTP_SERVER_KEY configured")
-            ssh.set_missing_host_key_policy(paramiko.MissingHostKeyPolicy())
-
-        ssh.connect(
-            settings.PORTICO_FTP_SERVER,
-            username=settings.PORTICO_FTP_USERNAME,
-            password=settings.PORTICO_FTP_PASSWORD,
-        )
-        sftp = ssh.open_sftp()
-        remote_path = 'janeway/{}'.format(file_name)
-        sftp.put(
-            zip_file,
-            remote_path,
+        sftp.send_file_via_sftp(
+            ftp_server=settings.PORTICO_FTP_SERVER,
+            ftp_username=settings.PORTICO_FTP_USERNAME,
+            ftp_password=settings.PORTICO_FTP_PASSWORD,
+            ftp_server_key=settings.PORTICO_FTP_SERVER_KEY,
+            remote_file_path='chips',
+            file_path=zip_file,
+            file_name=file_name,
         )
 
-        # Close SFTP Session and unlink the zip file
-        ssh.close()
         os.unlink(zip_file)
-
