@@ -18,3 +18,12 @@ PORTICO_FTP_USERNAME = ''
 PORTICO_FTP_PASSWORD = ''
 ```
 * Restart your Janeway instance
+
+## ECDSA Key
+
+As of late 2022 Portico only supports SFTP, so you will need to get the ECDSA key for their server before depositing. You can get the key by running:
+
+```
+ssh-keyscan -t ecdsa ftp.portico.org
+```
+
