@@ -3,11 +3,11 @@ from utils import models, setting_handler
 PLUGIN_NAME = 'portico'
 DESCRIPTION = 'This is a plugin to exporting Portico zip files.'
 AUTHOR = 'Birkbeck Centre for Technology and Publishing'
-VERSION = '1.3'
+VERSION = '1.4'
 SHORT_NAME = 'portico'
 DISPLAY_NAME = 'Portico'
 MANAGER_URL = 'portico_index'
-JANEWAY_VERSION = "1.3.6"
+JANEWAY_VERSION = "1.5.0"
 
 
 def get_self():
