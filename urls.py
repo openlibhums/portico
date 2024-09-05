@@ -1,7 +1,7 @@
-from django.conf.urls import url
+from django.urls import re_path
 
 from plugins.portico import views
 
 urlpatterns = [
-    url(r'^$', views.index, name='portico_index'),
+    re_path(r'^$', views.index, name='portico_index'),
 ]
