@@ -1,6 +1,6 @@
 from ftplib import FTP, error_perm
 import logging
-from mock import Mock
+from unittest.mock import Mock
 import os
 import paramiko
 
